@@ -1,50 +1,46 @@
 # Cub3D
 
-## 📌 Descripción
-Cub3D es un proyecto de gráficos en 3D basado en raycasting, desarrollado como parte del currículo de la academia **42 Madrid**. Inspirado en el motor gráfico de Wolfenstein 3D, este proyecto permite renderizar un entorno 3D simple en tiempo real utilizando la librería **MiniLibX**.
+Motor 3D por **raycasting** al estilo de Wolfenstein 3D, escrito en C con **MiniLibX**. Proyecto en
+pareja del Common Core de **42 Madrid**: lee un mapa desde un fichero `.cub` y lo pinta en primera
+persona y en tiempo real, con texturas en las paredes, colisiones y un minimapa.
 
-## 🚀 Características
-- Implementación de un motor de raycasting para representar un entorno en 3D.
-- Soporte para texturas en las paredes.
-- Movimiento del jugador en un espacio tridimensional con colisiones básicas.
-- Lectura y validación de mapas desde archivos `.cub`.
-- Gestión de colores para el cielo y el suelo.
+**Nota: 115/100** (con bonus)
 
-## 📜 Requisitos
-Para compilar y ejecutar **Cub3D**, se requieren las siguientes dependencias:
+## Características
 
-- **GNU Make** y **GCC**
-- **MiniLibX**
-- **Valgrind** (para detección de errores de memoria, opcional)
-- **Linux o macOS**
+- Raycasting con algoritmo DDA y una textura distinta para cada orientación de pared (N, S, E, O).
+- Colores de suelo y techo configurables.
+- Movimiento con colisiones y rotación de la cámara.
+- Minimapa (bonus).
+- Validación completa del fichero `.cub`, con un mensaje de error para cada fallo. En `maps/invalid/` hay
+  decenas de mapas mal formados para probarla.
 
-## ⚙️ Instalación
-Clona el repositorio y compílalo con:
+## Compilar y ejecutar
+
+Necesita GCC y Make. En Linux, además, las librerías de X11 (`libx11-dev`, `libxext-dev`). Las dos
+versiones de MiniLibX vienen en el repo.
+
 ```sh
-$ git clone https://github.com/tuusuario/cub3d.git
-$ cd cub3d
-$ make
+git clone https://github.com/VolmerES/Cub3D.git
+cd Cub3D
+make            # Linux (por defecto)
+make macos      # macOS
+./cub3D maps/valid/map_cave.cub
 ```
 
-## 🎮 Uso
-Para ejecutar el programa, usa:
-```sh
-$ ./cub3D maps/valid/map.cub
-```
+### Controles
 
-### Controles:
-- `WASD`: Movimiento del jugador
-- `← →`: Rotación de la vista
-- `ESC`: Salir del juego
+| Tecla | Acción |
+|---|---|
+| `W` `A` `S` `D` | Moverse |
+| `←` `→` | Girar la vista |
+| `ESC` | Salir |
 
-## 🗺️ Formato del Mapa
-El mapa debe estar en formato **.cub** y debe contener:
-- **Identificadores de texturas:** `NO`, `SO`, `WE`, `EA` (seguidos de la ruta de la textura)
-- **Colores de cielo y suelo:** `F` (Floor), `C` (Ceiling)
-- **Mapa del entorno:** Representado con `1` (paredes) y `0` (espacios abiertos)
-- **Ubicación del jugador:** `N`, `S`, `E`, `W` (indica la posición y dirección inicial)
+## Formato del mapa
 
-Ejemplo de mapa válido:
+Un fichero `.cub` lleva las cuatro texturas, los colores de suelo (`F`) y techo (`C`) en RGB y, al
+final, el mapa:
+
 ```txt
 NO ./textures/wall_1.xpm
 SO ./textures/wall_2.xpm
@@ -61,19 +57,29 @@ C 189,224,254
 1111111111
 ```
 
-## 🛠️ Desarrollo
-Para limpiar y recompilar el proyecto:
-```sh
-$ make fclean && make
-```
-Para depuración con Valgrind:
-```sh
-$ valgrind --leak-check=full ./cub3D maps/valid/map.cub
-```
+| Carácter | Significado |
+|:-:|---|
+| `1` | Pared |
+| `0` | Espacio libre |
+| `N` `S` `E` `W` | Posición inicial del jugador y hacia dónde mira |
 
-## 📌 Autores
-- **Sergio Marín Álvarez** ([smarin-a](https://github.com/tuusuario))
-- **Juan Delorme** ([jdelorme](https://github.com/jdelorme))
+El mapa tiene que estar cerrado por paredes y llevar un solo jugador.
 
-## 📜 Licencia
-Este proyecto es parte del currículo de 42 Madrid y se distribuye bajo los términos de la academia.
+## Estructura
+
+| Carpeta | Contenido |
+|---|---|
+| `src/parsing/` | Lectura y validación del `.cub` |
+| `src/rendering/` | Raycasting y dibujo de cada fotograma |
+| `src/movement/` | Movimiento, rotación y colisiones |
+| `src/textures/` | Carga de las texturas XPM |
+| `src/bonus/minimap/` | Minimapa |
+| `maps/` | Mapas válidos, inválidos y de bonus |
+
+Para buscar fugas de memoria: `valgrind --leak-check=full ./cub3D maps/valid/map_cave.cub`.
+
+## Autores
+
+- **Sergio Marín Álvarez** (`smarin-a`) · [@sermaal11](https://github.com/sermaal11)
+- **Juan Bautista Delorme** (`jdelorme`) · [@VolmerES](https://github.com/VolmerES) ·
+  [portafolio](https://juandelorme-portfolio.volmer.es)
