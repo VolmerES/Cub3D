@@ -82,4 +82,4 @@ Para buscar fugas de memoria: `valgrind --leak-check=full ./cub3D maps/valid/map
 
 - **Sergio Marín Álvarez** (`smarin-a`) · [@sermaal11](https://github.com/sermaal11)
 - **Juan Bautista Delorme** (`jdelorme`) · [@VolmerES](https://github.com/VolmerES) ·
-  [portafolio](https://juandelorme-portfolio.volmer.es)
+  [portafolio](https://juandelorme-portfolio.volmer.es) · [LinkedIn](https://www.linkedin.com/in/jdelorme/)
